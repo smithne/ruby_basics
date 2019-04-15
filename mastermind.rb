@@ -36,17 +36,36 @@ class Player
     def guess
         puts "enter four colours separated by spaces"
         puts "choices: " + Game.colors.join(" ")
+        guess_conforms = false
+
+        begin
+            guess = "red red red red" #gets.chomp
+            guess_conforms = validate_guess?(guess)
+            puts guess_conforms
+        end until guess_conforms
+        puts guess
+        return guess
     end
 
-    def evaluate_guess(code, guess)
-        code_copy = code.dup
+    def validate_guess?(guess)
+        guess_array = guess.downcase.split
+        conforms = (guess_array.length == 4)
+        guess_array.each do |color|
+            @possible_colors.include?(color) ? true : conforms = false
+        end
+    
+        return conforms
+    end
+
+    def evaluate_guess(guess)
+        code_copy = get_secret_code.dup
         correct_position = 0
         correct_color = 0
         hits = Hash.new
 
         # loop through to check for correct color in correct position.
         for i in 0...guess.length
-            if guess[i] == code[i]
+            if guess[i] == code_copy[i]
                 hits[i] = guess[i]
             end
         end
@@ -75,10 +94,6 @@ end
 
 class Human < Player
 
-    def initialize
-        super("codebreaker")
-    end
-
 end
 
 
@@ -94,7 +109,7 @@ class ComputerPlayer < Player
     end
 
     def get_secret_code
-        puts @secret_code
+        return @secret_code
     end
 
     private
@@ -115,7 +130,7 @@ class Game
     @@turns = 12
     @@colors = ['red', 'green', 'blue', 'purple', 'orange', 'yellow']
 
-    def initialize #(human_player, comp_player, board)
+    def initialize(human_player, comp_player, board)
         @turn_count = 0
         @human_player = human_player
         @comp_player = comp_player
@@ -126,8 +141,9 @@ class Game
     def play_round
         guess = @human_player.guess()
         @turn_count += 1
-        result = @comp_player.evaluate_guess(self.secret_code, guess)
-
+        result = @comp_player.evaluate_guess(guess)
+        puts result
+        
     end
 
     def self.colors
@@ -139,7 +155,7 @@ end
 class Board
 
     def initialize
-
+        puts "board initialized"
     end
 
     def draw_board
@@ -148,11 +164,12 @@ class Board
 
 end
 
-player_one = Human.new()
+player_one = Human.new("codebreaker", Game.colors)
 ai = ComputerPlayer.new("codemaker", Game.colors)
-game = Game.new()
+board = Board.new()
+game = Game.new(player_one, ai, board)
 
-game.play_round()
+game.play_round
 
 # start game
     # parameters
