@@ -84,20 +84,12 @@ class Player
 
     end
 
-    # code = ['red', 'blue', 'green', 'blue']
-    # guess = ['yellow', 'blue', 'green', 'red']
-    # evaluate_guess(code,guess)
-
-
 end
 
 
 class Human < Player
 
 end
-
-
-# ai = ComputerPlayer.new("codemaker",Game.colors)
 
 class ComputerPlayer < Player
 
@@ -125,7 +117,7 @@ class ComputerPlayer < Player
 end
 
 class Game
-    attr_reader :turn_count
+    attr_reader :turn_count, :board
 
     @@turns = 12
     @@colors = ['red', 'green', 'blue', 'purple', 'orange', 'yellow']
@@ -142,8 +134,14 @@ class Game
         guess = @human_player.guess()
         @turn_count += 1
         result = @comp_player.evaluate_guess(guess)
-        puts result
-        
+        board.add_turn(guess, result)
+
+        if result[:correct_position] == 4
+            # codebreaker wins
+        else
+            # play another round
+        end
+
     end
 
     def self.colors
@@ -160,6 +158,12 @@ class Board
 
     def draw_board
         puts "new game started"
+    end
+
+    def add_turn(guess, result)
+        puts "The player guessed: #{guess}"
+        puts "There were #{result[:correct_position]} guesses in the correct position"
+        puts "There were #{result[:correct_color]} guesses of the correct color but wrong position"
     end
 
 end
