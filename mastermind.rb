@@ -1,28 +1,3 @@
-# pick number of games
-
-    # play one game
-        # computer picks colors, human guesses
-            # computer comes up with colors randomly
-        
-        # PART 2: allow user to pick who is codemaker or codebreaker
-
-# game flow
-
-# start game
-    # parameters
-        # who is codemaker, who is codebreaker (CPU or player)
-        # (stretch, default 12) how many turns
-        # (stretch, default 6) how many colors
-        # (stretch, default 4) code length
-    # draw blank board
-    # computer sets code
-    # until either code is guessed correctly or out of turns:
-        # player guesses
-        # check for correctness
-        # re-draw board with guess and result
-        # if all guesses are correct, codemaker wins
-        # else, increment guess count. if guess count == turn limit, codebreaker wins
-
 class Player
     attr_reader :role
 
@@ -39,7 +14,9 @@ class Player
         guess_conforms = false
 
         begin
-            guess = "red red red red" #gets.chomp
+            # dummy guess for debugging
+            # guess = "green blue green yellow" 
+            guess = gets.chomp
             guess_conforms = validate_guess?(guess)
             puts guess_conforms
         end until guess_conforms
@@ -58,6 +35,7 @@ class Player
     end
 
     def evaluate_guess(guess)
+        guess = guess.split(" ")
         code_copy = get_secret_code.dup
         correct_position = 0
         correct_color = 0
@@ -71,12 +49,10 @@ class Player
         end
         correct_position = hits.length
 
-        # after checking position, loop through again to find
-        # how many were correct color but wrong position
-        for i in 0...guess.length
-            if code_copy.include?(guess[i]) and !(hits.has_key?(i))
+        for i in 0...code_copy.length
+            if guess.include?(code_copy[i]) and !(hits.has_key?(i))
                 correct_color += 1
-                code_copy.delete_at(code_copy.index(guess[i]))
+                guess.delete_at(guess.index(code_copy[i]))
             end
         end
 
@@ -130,19 +106,29 @@ class Game
         @board.draw_board()
     end
 
-    def play_round
+    def play_turn
         guess = @human_player.guess()
-        @turn_count += 1
+        
         result = @comp_player.evaluate_guess(guess)
         board.add_turn(guess, result)
 
         if result[:correct_position] == 4
-            # codebreaker wins
+            return "codebreaker"
         else
-            # play another round
+            return nil
         end
 
     end
+
+    def play_round
+        winner = nil
+        while (@turn_count < @@turns) and !winner do
+            winner = self.play_turn()
+            @turn_count += 1
+        end
+        return winner || "codemaker"
+    end
+
 
     def self.colors
         return @@colors
@@ -173,19 +159,4 @@ ai = ComputerPlayer.new("codemaker", Game.colors)
 board = Board.new()
 game = Game.new(player_one, ai, board)
 
-game.play_round
-
-# start game
-    # parameters
-        # who is codemaker, who is codebreaker (CPU or player)
-        # (stretch, default 12) how many turns
-        # (stretch, default 6) how many colors
-        # (stretch, default 4) code length
-    # draw blank board
-    # computer sets code
-    # until either code is guessed correctly or out of turns:
-        # player guesses
-        # check for correctness
-        # re-draw board with guess and result
-        # if all guesses are correct, codemaker wins
-        # else, increment guess count. if guess count == turn limit, codebreaker wins
+puts game.play_round + " wins!"
