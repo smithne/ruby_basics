@@ -44,7 +44,7 @@ class LinkedList
     def pop()
         node = @head
         
-        return "Erorr: list is empty" if node == nil
+        return "Erorr: list is empty" if node.nil?
         
         # only one element in node (head)
         if node.next_node == nil
@@ -66,7 +66,10 @@ class LinkedList
         
     end
     
-    
+    def contains?(value)
+        return false if @head.nil? 
+        
+    end
 end
 
 
