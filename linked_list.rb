@@ -40,6 +40,33 @@ class LinkedList
         
         return node
     end
+    
+    def pop()
+        node = @head
+        
+        return "Erorr: list is empty" if node == nil
+        
+        # only one element in node (head)
+        if node.next_node == nil
+           @head = nil
+            @tail = nil
+            return node
+        end
+        
+        # find second to last node
+        while node.next_node.next_node != nil
+            puts node.value
+            node = node.next_node
+        end
+        
+        @tail = node
+        popped_node = node.next_node
+        node.next_node = nil
+        return popped_node
+        
+    end
+    
+    
 end
 
 
@@ -55,3 +82,6 @@ class Node
 end
 
 list = LinkedList.new()
+list.append('a')
+list.append('b')
+list.append('c')
