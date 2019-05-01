@@ -30,11 +30,16 @@ class LinkedList
     def at(index)
 
         return "Error: index exceeds size of list" if index >= @size
-
         
-            
+        count = 0
+        node = @head
+        while count < index do
+            node = node.next_node
+            count += 1
+        end
+        
+        return node
     end
-
 end
 
 
