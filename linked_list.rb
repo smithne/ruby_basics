@@ -106,6 +106,32 @@ class LinkedList
         return output
     end
 
+    def insert_at(data, index)
+
+        return "Error: index exceeds size of list" if index > @size
+
+        if index == 0
+            self.prepend(data)
+        elsif index == @size
+            self.append(data)
+        else
+            new_node = Node.new(data)
+            node = @head
+            count = 0
+            
+            while count < (index - 1)
+                node = node.next_node
+                count += 1
+            end
+
+            next_placeholder = node.next_node
+            node.next_node = new_node
+            new_node.next_node = next_placeholder
+            @size += 1
+        end
+
+    end
+
 end
 
 
@@ -124,3 +150,7 @@ list = LinkedList.new()
 list.append('a')
 list.append('b')
 list.append('c')
+list.insert_at('new1', 0)
+list.insert_at('new2', 1)
+list.insert_at('new3', 5)
+list.insert_at('new4', 2)
