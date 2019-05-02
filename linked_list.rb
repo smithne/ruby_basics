@@ -93,6 +93,19 @@ class LinkedList
         return nil
     end
 
+    def to_s
+        output = ""
+        node = @head
+        while node
+            output += "( #{node.value} ) -> "
+            node = node.next_node
+        end
+
+        output += "nil"
+
+        return output
+    end
+
 end
 
 
