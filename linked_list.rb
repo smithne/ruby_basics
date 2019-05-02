@@ -47,14 +47,14 @@ class LinkedList
         return "Erorr: list is empty" if node.nil?
         
         # only one element in node (head)
-        if node.next_node == nil
+        if node.next_node.nil?
            @head = nil
             @tail = nil
             return node
         end
         
         # find second to last node
-        while node.next_node.next_node != nil
+        while node.next_node.next_node
             puts node.value
             node = node.next_node
         end
@@ -62,13 +62,21 @@ class LinkedList
         @tail = node
         popped_node = node.next_node
         node.next_node = nil
+        @size -= 1
         return popped_node
         
     end
     
-    def contains?(value)
+    def contains?(find_value)
         return false if @head.nil? 
         
+        node = @head
+        while node.next_node
+            return true if node.value == find_value
+            node = node.next_node
+        end
+
+        return false
     end
 end
 
