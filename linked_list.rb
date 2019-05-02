@@ -71,13 +71,28 @@ class LinkedList
         return false if @head.nil? 
         
         node = @head
-        while node.next_node
+        while node
             return true if node.value == find_value
             node = node.next_node
         end
 
         return false
     end
+
+    def find(find_value)
+        return nil if @head.nil? 
+        
+        node = @head
+        count = 0
+        while node
+            return count if node.value == find_value
+            node = node.next_node
+            count += 1
+        end
+
+        return nil
+    end
+
 end
 
 
