@@ -74,6 +74,15 @@ class Tree
 
     def depth_first_search(search_value = nil)
         return "Tree is null" if @root.nil?
+        
+        stack = [@root]
+        
+        while (!stack.empty?)
+            node = stack.pop
+            puts node.value
+            stack << node.right if node.right
+            stack << node.left if node.left
+        end
     end
 
     # recursive depth-first search
