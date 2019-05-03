@@ -31,16 +31,30 @@ class Tree
             i = 1
 
             ## to do - finish build methodology
+            node = @root
+            
             while i < data.length
-                self.add(data[i])
+                add_node(data[i], @root)
+                i += 1
+                puts data[i]
             end
-
         end
-
     end
 
-    def add(data)
-
+    def add_node(data, parent)
+        if data < parent.value
+            if parent.left == nil
+                parent.left = Node.new(data, parent, nil, nil)
+            else
+                add_node(data, parent.left)
+            end
+        else
+            if parent.right == nil
+                parent.right = Node.new(data, parent, nil, nil)
+            else
+                add_node(data, parent.right)
+            end
+        end
     end
 
     def breadth_first_search(value)
@@ -58,3 +72,8 @@ class Tree
     end
 
 end
+
+# debug stuff
+tree = Tree.new()
+array = [12, 3, 72, 34, 4, 9, 18, 54, 23, 38, 22, 1, 5, 99]
+tree.build_tree(array)
