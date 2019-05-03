@@ -57,18 +57,28 @@ class Tree
         end
     end
 
-    def breadth_first_search(value)
-
+    def breadth_first_search(search_value)
+        return "Tree is null" if @root.nil?
+        queue = [@root]
+        node = @root
+        while (!queue.empty?)
+            node = queue.shift
+            return node if node.value == search_value
+            queue << node.left if node.left
+            queue << node.right if node.right
+            #puts node.value
+        end
+        return nil
     end
 
 
-    def depth_first_search(value)
-
+    def depth_first_search(search_value = nil)
+        return "Tree is null" if @root.nil?
     end
 
     # recursive depth-first search
-    def dfs_rec(value)
-
+    def dfs_rec(search_value = nil)
+        return "Tree is null" if @root.nil?
     end
 
 end
