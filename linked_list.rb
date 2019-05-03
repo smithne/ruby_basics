@@ -132,6 +132,24 @@ class LinkedList
 
     end
 
+    def remove_at(index)
+        return "Error: index exceeds size of list" if index >= @size
+
+        if index == 0
+            @head = @head.next_node
+        else
+            count = 0
+            node = @head
+            while count < (index - 1)
+                puts index
+                node = node.next_node
+                count += 1
+            end
+            node.next_node = node.next_node.next_node
+        end
+        @size -= 1
+    end
+
 end
 
 
@@ -146,11 +164,9 @@ class Node
 
 end
 
+# debugging aids
+
 list = LinkedList.new()
 list.append('a')
 list.append('b')
 list.append('c')
-list.insert_at('new1', 0)
-list.insert_at('new2', 1)
-list.insert_at('new3', 5)
-list.insert_at('new4', 2)
