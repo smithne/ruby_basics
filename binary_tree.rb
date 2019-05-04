@@ -71,7 +71,6 @@ class Tree
         return nil
     end
 
-
     def depth_first_search(search_value = nil)
         return "Tree is null" if @root.nil?
         
@@ -79,15 +78,25 @@ class Tree
         
         while (!stack.empty?)
             node = stack.pop
-            puts node.value
-            stack << node.right if node.right
-            stack << node.left if node.left
+            return node if node.value == search_value
+            if node.right && (search_value > node.value)
+                stack << node.right
+            elsif node.left
+                stack << node.left
+            end
         end
+        return nil
     end
 
-    # recursive depth-first search
-    def dfs_rec(search_value = nil)
-        return "Tree is null" if @root.nil?
+    def dfs_rec(search_value, node = @root)
+        return if node.nil?
+        return node if node.value == search_value
+        if node.left && search_value < node.value 
+            return dfs_rec(search_value, node.left)
+        elsif node.right
+            return dfs_rec(search_value, node.right)
+        end
+        return nil
     end
 
 end
@@ -96,3 +105,4 @@ end
 tree = Tree.new()
 array = [12, 3, 72, 34, 4, 9, 18, 54, 23, 38, 22, 1, 5, 99]
 tree.build_tree(array)
+tree.dfs_rec(12)
